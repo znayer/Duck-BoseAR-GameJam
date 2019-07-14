@@ -95,7 +95,7 @@ namespace Bose.Wearable
 				_rotationSource == RotationSensorSource.NineDof ? 
 					SensorId.RotationNineDof : 
 					SensorId.RotationSixDof);
-			requirement.SetSensorUpdateInterval(SensorUpdateInterval.EightyMs);
+			requirement.SetSensorUpdateInterval(SensorUpdateInterval.FortyMs);
 		}
 
 		private void Update()
