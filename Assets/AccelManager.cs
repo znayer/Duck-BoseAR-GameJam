@@ -9,6 +9,8 @@ public class AccelManager : MonoBehaviour {
 
 	private WearableControl _wearableControl;
 
+	public Transform head;
+
 	private void Awake()
 	{
 		// Begin in absolute mode and cache the wearable controller.
@@ -39,9 +41,9 @@ public class AccelManager : MonoBehaviour {
         SensorFrame frame = _wearableControl.LastSensorFrame;
         Vector3 frameDelta = frame.acceleration;
 
-        print((Quaternion.Euler(0,1f,0) * transform.rotation).eulerAngles);
+        transform.rotation = head.rotation;
 
-        frameDelta += transform.rotation * (-Vector3.up * 9.8f);
+        //frameDelta += transform.rotation * (-Vector3.up * 9.8f);
         if (frameDelta.magnitude > 8f){
         	print(frameDelta);
         }
