@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public enum Direction{
 		North, East, South, West
@@ -19,22 +20,44 @@ public class SongManager : MonoBehaviour {
 	private Direction[] sequence;
 
 	public Transform head;
-	public AudioClip[] voicecues;
-	private AudioSource voice;
+	public AudioSource[] voicecues;
+
+	// Orbs
+	public Material lightMaterial;
+	public Material defMaterial;
+	public Renderer rightMark;
+	public Renderer leftMark;
+	public Renderer upMark;
+	public Renderer downMark;
+	public Text scoreText;
+	private int score = 0;
+	
 	private int delay;
+
+	private AudioSource sfx;
+	public AudioClip[] dings;
+	public AudioClip dong;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		sequence = new Direction[4];
 		player = gameObject.AddComponent<AudioSource>();
+		sfx = gameObject.AddComponent<AudioSource>();
+	}
+
+	void OnEnable(){
 		player.clip = song;
 		BeatDuration = song.frequency * (60/BPM);
 		player.Play();
-		voice = gameObject.AddComponent<AudioSource>();
+		scoreText.text = "Score: 0";
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if((player.timeSamples - delay) / BeatDuration > BeatCount){
+			rightMark.material = defMaterial;
+	        leftMark.material = defMaterial;
+	        upMark.material = defMaterial;
+	        downMark.material = defMaterial;
 			TickBeat();
 			BeatCount++;
 		}
@@ -43,30 +66,27 @@ public class SongManager : MonoBehaviour {
 	void TickBeat(){
 		int phase = BeatCount % 12;
 		if (phase < 4){
-			print("rest");
+			// Nothing
+			//print("rest");
 		}else if(phase < 8){
 			int dex = phase % 4;
 			sequence[dex] = (Direction)Enum.GetValues(typeof(Direction)).GetValue(UnityEngine.Random.Range(0,4));
 			switch(sequence[dex]){
 			case Direction.North:
-				voice.clip = voicecues[(int)Direction.North];
-				voice.panStereo = 0.0f;
-				voice.Play();
+				voicecues[(int)Direction.North].Play();
+				upMark.material = lightMaterial;
 				break;
 			case Direction.East:
-				voice.clip = voicecues[(int)Direction.East];
-				voice.panStereo = 1.0f;
-				voice.Play();
+				voicecues[(int)Direction.East].Play();
+				rightMark.material = lightMaterial;
 				break;
 			case Direction.South:
-				voice.clip = voicecues[(int)Direction.South];
-				voice.panStereo = 0.0f;
-				voice.Play();
+				voicecues[(int)Direction.South].Play();
+				downMark.material = lightMaterial;
 				break;
 			case Direction.West:
-				voice.clip = voicecues[(int)Direction.West];
-				voice.panStereo = -1.0f;
-				voice.Play();
+				voicecues[(int)Direction.West].Play();
+				leftMark.material = lightMaterial;
 				break;
 			}
 		}else{
@@ -85,12 +105,34 @@ public class SongManager : MonoBehaviour {
 			}else{
 				input = Direction.West;
 			}
-			print(input == sequence[dex]);
+			if(input == sequence[dex]){
+				sfx.clip = dings[dex];
+				sfx.Play();
+				switch(input){
+					case Direction.North:
+						upMark.material = lightMaterial;
+						break;
+					case Direction.East:
+						rightMark.material = lightMaterial;
+						break;
+					case Direction.South:
+						downMark.material = lightMaterial;
+						break;
+					case Direction.West:
+						leftMark.material = lightMaterial;
+						break;
+				}
+				score += 100;
+				scoreText.text = "Score: " + score.ToString();
+			}else{
+				sfx.clip = dong;
+				sfx.Play();
+			}
 		}
 		if (phase == 7){
 			delay = song.frequency / 8;
 		}else if (phase == 0){
-			delay = 0;
+			delay = -song.frequency / 32;
 		}
 	}
 }
