@@ -11,7 +11,9 @@ public enum Direction{
 public class SongManager : MonoBehaviour {
 
 	public AudioClip song;
-	public double BPM; 
+	public double BPM;
+	public double introTime;
+	private int introSamples;
 
 	private AudioSource player;
 	private double BeatDuration;
@@ -37,6 +39,7 @@ public class SongManager : MonoBehaviour {
 	private AudioSource sfx;
 	public AudioClip[] dings;
 	public AudioClip dong;
+	public Transform duckHead;
 	// Use this for initialization
 	void Awake () {
 		sequence = new Direction[4];
@@ -46,14 +49,16 @@ public class SongManager : MonoBehaviour {
 
 	void OnEnable(){
 		player.clip = song;
+		player.volume = 0.3f;
 		BeatDuration = song.frequency * (60/BPM);
 		player.Play();
 		scoreText.text = "Score: 0";
+		introSamples = (int)(song.frequency * introTime);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if((player.timeSamples - delay) / BeatDuration > BeatCount){
+		if((player.timeSamples - delay - introSamples) / BeatDuration > BeatCount){
 			rightMark.material = defMaterial;
 	        leftMark.material = defMaterial;
 	        upMark.material = defMaterial;
@@ -61,6 +66,9 @@ public class SongManager : MonoBehaviour {
 			TickBeat();
 			BeatCount++;
 		}
+		Vector3 Headrot = -head.eulerAngles;
+		Headrot.z = -Headrot.z;
+		duckHead.eulerAngles = Headrot;
 	}
 
 	void TickBeat(){
@@ -130,9 +138,9 @@ public class SongManager : MonoBehaviour {
 			}
 		}
 		if (phase == 7){
-			delay = song.frequency / 8;
+			//delay = song.frequency / 8;
 		}else if (phase == 0){
-			delay = -song.frequency / 32;
+			//delay = -song.frequency / 64;
 		}
 	}
 }

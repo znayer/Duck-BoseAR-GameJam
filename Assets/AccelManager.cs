@@ -39,7 +39,7 @@ public class AccelManager : MonoBehaviour {
         SensorFrame frame = _wearableControl.LastSensorFrame;
         Vector3 frameDelta = frame.acceleration;
 
-        
+        print((Quaternion.Euler(0,1f,0) * transform.rotation).eulerAngles);
 
         frameDelta += transform.rotation * (-Vector3.up * 9.8f);
         if (frameDelta.magnitude > 8f){
