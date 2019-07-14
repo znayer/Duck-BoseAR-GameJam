@@ -27,6 +27,7 @@ public class SongManager : MonoBehaviour {
 	// Orbs
 	public Material lightMaterial;
 	public Material defMaterial;
+	public Material wrongMat;
 	public Renderer rightMark;
 	public Renderer leftMark;
 	public Renderer upMark;
@@ -135,6 +136,20 @@ public class SongManager : MonoBehaviour {
 			}else{
 				sfx.clip = dong;
 				sfx.Play();
+				switch(input){
+					case Direction.North:
+						upMark.material = wrongMat;
+						break;
+					case Direction.East:
+						rightMark.material = wrongMat;
+						break;
+					case Direction.South:
+						downMark.material = wrongMat;
+						break;
+					case Direction.West:
+						leftMark.material = wrongMat;
+						break;
+				}
 			}
 		}
 		if (phase == 7){
