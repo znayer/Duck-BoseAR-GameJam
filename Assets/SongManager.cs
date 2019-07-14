@@ -41,6 +41,8 @@ public class SongManager : MonoBehaviour {
 	public AudioClip[] dings;
 	public AudioClip dong;
 	public Transform duckHead;
+	private Quaternion baseRot = Quaternion.identity;
+	private Quaternion finalRot = Quaternion.identity;
 	// Use this for initialization
 	void Awake () {
 		sequence = new Direction[4];
@@ -56,10 +58,20 @@ public class SongManager : MonoBehaviour {
 		scoreText.text = "Score: 0";
 		introSamples = (int)(song.frequency * introTime);
 	}
+
+	public void SetBaseRot(){
+		print("hi fools");
+		baseRot = head.rotation;
+	}
 	
 	// Update is called once per frame
 	void Update () {
+		finalRot = head.rotation * Quaternion.Inverse(baseRot);
+		Vector3 Headrot = -finalRot.eulerAngles;
+		Headrot.z = -Headrot.z;
+		//duckHead.eulerAngles = Headrot;
 		if((player.timeSamples - delay - introSamples) / BeatDuration > BeatCount){
+			duckHead.eulerAngles = Vector3.zero;
 			rightMark.material = defMaterial;
 	        leftMark.material = defMaterial;
 	        upMark.material = defMaterial;
@@ -67,9 +79,7 @@ public class SongManager : MonoBehaviour {
 			TickBeat();
 			BeatCount++;
 		}
-		Vector3 Headrot = -head.eulerAngles;
-		Headrot.z = -Headrot.z;
-		duckHead.eulerAngles = Headrot;
+		
 	}
 
 	void TickBeat(){
@@ -101,42 +111,58 @@ public class SongManager : MonoBehaviour {
 		}else{
 			int dex = phase % 4;
 			Direction input;
-			float elevation = head.eulerAngles.x;
+			float elevation = finalRot.eulerAngles.x;
  			elevation = (elevation > 180) ? elevation - 360 : elevation;
- 			float azimuth = head.eulerAngles.y;
+ 			float azimuth = finalRot.eulerAngles.y;
  			azimuth = (azimuth > 180) ? azimuth - 360 : azimuth;
-			if (elevation < -20f){
-				input = Direction.North;
-			}else if (elevation > 20f){
-				input = Direction.South;
-			}else if (azimuth > 0){
-				input = Direction.East;
-			}else{
-				input = Direction.West;
+			bool correct = false;
+			switch(sequence[dex]){
+				case Direction.North:
+					if(elevation < -20){
+						input = Direction.North;
+						duckHead.eulerAngles = new Vector3(35, 0, 0);
+						upMark.material = lightMaterial;
+						correct = true;
+					}
+					
+					break;
+				case Direction.East:
+					if (azimuth > 35f){
+						input = Direction.East;
+						duckHead.eulerAngles = new Vector3(0, -35, 0);
+						rightMark.material = lightMaterial;
+						correct = true;
+					}
+					
+					break;
+				case Direction.South:
+					if (elevation > 20){
+						input = Direction.South;
+						duckHead.eulerAngles = new Vector3(-35, 0, 0);
+						downMark.material = lightMaterial;
+						correct = true;
+					}
+					
+					break;
+				case Direction.West:
+					if (azimuth < -35f){
+						input = Direction.West;
+						duckHead.eulerAngles = new Vector3(0, 35, 0);
+						leftMark.material = lightMaterial;
+						correct = true;
+					}
+					
+					break;
 			}
-			if(input == sequence[dex]){
+			if(correct){
 				sfx.clip = dings[dex];
 				sfx.Play();
-				switch(input){
-					case Direction.North:
-						upMark.material = lightMaterial;
-						break;
-					case Direction.East:
-						rightMark.material = lightMaterial;
-						break;
-					case Direction.South:
-						downMark.material = lightMaterial;
-						break;
-					case Direction.West:
-						leftMark.material = lightMaterial;
-						break;
-				}
 				score += 100;
 				scoreText.text = "Score: " + score.ToString();
 			}else{
 				sfx.clip = dong;
 				sfx.Play();
-				switch(input){
+				switch(sequence[dex]){
 					case Direction.North:
 						upMark.material = wrongMat;
 						break;
