@@ -43,11 +43,15 @@ public class SongManager : MonoBehaviour {
 	public Transform duckHead;
 	private Quaternion baseRot = Quaternion.identity;
 	private Quaternion finalRot = Quaternion.identity;
+	public AudioClip kick;
+	private AudioSource metro;
+	public Transform speakers;
 	// Use this for initialization
 	void Awake () {
 		sequence = new Direction[4];
 		player = gameObject.AddComponent<AudioSource>();
 		sfx = gameObject.AddComponent<AudioSource>();
+		metro = gameObject.AddComponent<AudioSource>();
 	}
 
 	void OnEnable(){
@@ -57,26 +61,54 @@ public class SongManager : MonoBehaviour {
 		player.Play();
 		scoreText.text = "Score: 0";
 		introSamples = (int)(song.frequency * introTime);
+		metro.clip = kick;
+		metro.volume = 0.5f;
 	}
 
 	public void SetBaseRot(){
 		baseRot = head.rotation;
+		speakers.rotation = baseRot;
 		this.gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		finalRot = head.rotation * Quaternion.Inverse(baseRot);
+		if (Input.GetKeyDown(KeyCode.Space)){
+			SetBaseRot();
+		}
+		finalRot = Quaternion.Inverse(baseRot) * head.rotation;
 		Vector3 Headrot = -finalRot.eulerAngles;
 		Headrot.z = -Headrot.z;
 		duckHead.eulerAngles = Headrot;
-		if((player.timeSamples - delay - introSamples) / BeatDuration > BeatCount){
+		double curbeat = (player.timeSamples - delay - introSamples) / BeatDuration;
+		if(curbeat > BeatCount){
 			rightMark.material = defMaterial;
 	        leftMark.material = defMaterial;
 	        upMark.material = defMaterial;
 	        downMark.material = defMaterial;
 			TickBeat();
-			BeatCount++;
+			//BeatCount++;
+		}
+		if (curbeat - BeatCount > (BeatDuration / song.frequency) * 0.4f){
+			sfx.clip = dong;
+				sfx.Play();
+				int dex = (BeatCount % 12) % 4;
+				switch(sequence[dex]){
+					case Direction.North:
+						upMark.material = wrongMat;
+						break;
+					case Direction.East:
+						rightMark.material = wrongMat;
+						break;
+					case Direction.South:
+						downMark.material = wrongMat;
+						break;
+					case Direction.West:
+						leftMark.material = wrongMat;
+						break;
+				}
+				BeatCount++;
+				metro.Play();
 		}
 		
 	}
@@ -84,6 +116,7 @@ public class SongManager : MonoBehaviour {
 	void TickBeat(){
 		int phase = BeatCount % 12;
 		if (phase < 4){
+			BeatCount++;
 			// Nothing
 			//print("rest");
 		}else if(phase < 8){
@@ -107,6 +140,7 @@ public class SongManager : MonoBehaviour {
 				leftMark.material = lightMaterial;
 				break;
 			}
+			BeatCount++;
 		}else{
 			int dex = phase % 4;
 			Direction input;
@@ -117,7 +151,7 @@ public class SongManager : MonoBehaviour {
 			bool correct = false;
 			switch(sequence[dex]){
 				case Direction.North:
-					if(elevation < -20){
+					if(elevation < -10){
 						input = Direction.North;
 						upMark.material = lightMaterial;
 						correct = true;
@@ -125,7 +159,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.East:
-					if (azimuth > 35f){
+					if (azimuth > 20f){
 						input = Direction.East;
 						rightMark.material = lightMaterial;
 						correct = true;
@@ -133,7 +167,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.South:
-					if (elevation > 20){
+					if (elevation > 10){
 						input = Direction.South;
 						downMark.material = lightMaterial;
 						correct = true;
@@ -141,7 +175,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.West:
-					if (azimuth < -35f){
+					if (azimuth < -20f){
 						input = Direction.West;
 						leftMark.material = lightMaterial;
 						correct = true;
@@ -154,7 +188,10 @@ public class SongManager : MonoBehaviour {
 				sfx.Play();
 				score += 100;
 				scoreText.text = "Score: " + score.ToString();
+				BeatCount++;
+				metro.Play();
 			}else{
+				/*
 				sfx.clip = dong;
 				sfx.Play();
 				switch(sequence[dex]){
@@ -170,13 +207,13 @@ public class SongManager : MonoBehaviour {
 					case Direction.West:
 						leftMark.material = wrongMat;
 						break;
-				}
+				}*/
 			}
 		}
 		if (phase == 7){
-			delay = song.frequency / 8;
+			//delay = song.frequency / 8;
 		}else if (phase == 0){
-			delay = -song.frequency / 64;
+			//delay = -song.frequency / 64;
 		}
 	}
 }
