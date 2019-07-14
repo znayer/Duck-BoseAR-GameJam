@@ -60,8 +60,8 @@ public class SongManager : MonoBehaviour {
 	}
 
 	public void SetBaseRot(){
-		print("hi fools");
 		baseRot = head.rotation;
+		this.gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -69,9 +69,8 @@ public class SongManager : MonoBehaviour {
 		finalRot = head.rotation * Quaternion.Inverse(baseRot);
 		Vector3 Headrot = -finalRot.eulerAngles;
 		Headrot.z = -Headrot.z;
-		//duckHead.eulerAngles = Headrot;
+		duckHead.eulerAngles = Headrot;
 		if((player.timeSamples - delay - introSamples) / BeatDuration > BeatCount){
-			duckHead.eulerAngles = Vector3.zero;
 			rightMark.material = defMaterial;
 	        leftMark.material = defMaterial;
 	        upMark.material = defMaterial;
@@ -120,7 +119,6 @@ public class SongManager : MonoBehaviour {
 				case Direction.North:
 					if(elevation < -20){
 						input = Direction.North;
-						duckHead.eulerAngles = new Vector3(35, 0, 0);
 						upMark.material = lightMaterial;
 						correct = true;
 					}
@@ -129,7 +127,6 @@ public class SongManager : MonoBehaviour {
 				case Direction.East:
 					if (azimuth > 35f){
 						input = Direction.East;
-						duckHead.eulerAngles = new Vector3(0, -35, 0);
 						rightMark.material = lightMaterial;
 						correct = true;
 					}
@@ -138,7 +135,6 @@ public class SongManager : MonoBehaviour {
 				case Direction.South:
 					if (elevation > 20){
 						input = Direction.South;
-						duckHead.eulerAngles = new Vector3(-35, 0, 0);
 						downMark.material = lightMaterial;
 						correct = true;
 					}
@@ -147,7 +143,6 @@ public class SongManager : MonoBehaviour {
 				case Direction.West:
 					if (azimuth < -35f){
 						input = Direction.West;
-						duckHead.eulerAngles = new Vector3(0, 35, 0);
 						leftMark.material = lightMaterial;
 						correct = true;
 					}
