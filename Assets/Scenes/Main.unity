@@ -882,7 +882,7 @@ Prefab:
     - target: {fileID: 224649300750038014, guid: 0499f078647c040d7a21b94ff1177202,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 224649300750038014, guid: 0499f078647c040d7a21b94ff1177202,
         type: 2}
@@ -907,7 +907,7 @@ Prefab:
     - target: {fileID: 224101986165128820, guid: 0499f078647c040d7a21b94ff1177202,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 224101986165128820, guid: 0499f078647c040d7a21b94ff1177202,
         type: 2}
@@ -978,7 +978,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7e1306370f8153d4f9d91ec047f920f2, type: 3}
   - {fileID: 8300000, guid: 21b8aa15ce94b6c42b0ed2661dd49e27, type: 3}
   - {fileID: 8300000, guid: 575ca2ed4387cce479c739713896c899, type: 3}
-  dong: {fileID: 8300000, guid: 2745381d8194838469848061fb12885b, type: 3}
+  dong: {fileID: 8300000, guid: 47ee5d5dd6b6242e499c00997c4d1599, type: 3}
   duckHead: {fileID: 1692857959}
 --- !u!4 &591044640
 Transform:
@@ -1071,7 +1071,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 222039188
+  randomSeed: 1349374292
   InitialModule:
     serializedVersion: 3
     enabled: 1

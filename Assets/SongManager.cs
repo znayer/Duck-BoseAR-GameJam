@@ -138,9 +138,9 @@ public class SongManager : MonoBehaviour {
 			}
 		}
 		if (phase == 7){
-			//delay = song.frequency / 8;
+			delay = song.frequency / 8;
 		}else if (phase == 0){
-			//delay = -song.frequency / 64;
+			delay = -song.frequency / 64;
 		}
 	}
 }
