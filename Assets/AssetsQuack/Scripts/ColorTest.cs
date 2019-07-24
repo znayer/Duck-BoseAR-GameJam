@@ -5,9 +5,9 @@ using UnityEngine;
 public class ColorTest: MonoBehaviour
 {
 
-    public Material lightMaterial;
     public Material defMaterial;
     public Transform characterFace;
+    public Material lightMaterial;
 	public Renderer rightMark;
 	public Renderer leftMark;
 	public Renderer upMark;

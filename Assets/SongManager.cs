@@ -10,9 +10,9 @@ public enum Direction{
 
 public class SongManager : MonoBehaviour {
 
-	public AudioClip song;
-	public double BPM;
-	public double introTime;
+	static public AudioClip song;
+	static public double BPM;
+	static public double introTime;
 	private int introSamples;
 
 	private AudioSource player;
@@ -151,7 +151,7 @@ public class SongManager : MonoBehaviour {
 			bool correct = false;
 			switch(sequence[dex]){
 				case Direction.North:
-					if(elevation < -10){
+					if(elevation < -5){
 						input = Direction.North;
 						upMark.material = lightMaterial;
 						correct = true;
@@ -159,7 +159,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.East:
-					if (azimuth > 20f){
+					if (azimuth > 10f){
 						input = Direction.East;
 						rightMark.material = lightMaterial;
 						correct = true;
@@ -167,7 +167,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.South:
-					if (elevation > 10){
+					if (elevation > 5){
 						input = Direction.South;
 						downMark.material = lightMaterial;
 						correct = true;
@@ -175,7 +175,7 @@ public class SongManager : MonoBehaviour {
 					
 					break;
 				case Direction.West:
-					if (azimuth < -20f){
+					if (azimuth < -10f){
 						input = Direction.West;
 						leftMark.material = lightMaterial;
 						correct = true;
