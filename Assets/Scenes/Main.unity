@@ -813,10 +813,10 @@ MonoBehaviour:
   downMark: {fileID: 1017936008}
   scoreText: {fileID: 1078930982}
   dings:
-  - {fileID: 8300000, guid: a63ced6165e0ca44689697005802efdb, type: 3}
-  - {fileID: 8300000, guid: 7e1306370f8153d4f9d91ec047f920f2, type: 3}
-  - {fileID: 8300000, guid: 21b8aa15ce94b6c42b0ed2661dd49e27, type: 3}
-  - {fileID: 8300000, guid: 575ca2ed4387cce479c739713896c899, type: 3}
+  - {fileID: 8300000, guid: ef85b72ccd9742b4e93fb23933fcbe40, type: 3}
+  - {fileID: 8300000, guid: ca3a37b369503ab40aaab663f0c84306, type: 3}
+  - {fileID: 8300000, guid: a42e473ce0400ba4cb34048e618dcbf0, type: 3}
+  - {fileID: 8300000, guid: db3e182674e93c64bba966c063482425, type: 3}
   dong: {fileID: 8300000, guid: 47ee5d5dd6b6242e499c00997c4d1599, type: 3}
   duckHead: {fileID: 1692857959}
   kick: {fileID: 8300000, guid: bb17830e614ed4225b745ebc33bfcc6f, type: 3}
