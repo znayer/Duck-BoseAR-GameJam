@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: f8319764f1b66415ebe45d4f8fc51d7e
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: baa81957f363841068aff0b21b327ca4
-  - enabled: 1
     path: Assets/Scenes/SongSelect.unity
     guid: 838035c1160ae4d6295a7f3edf70bcaf
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: baa81957f363841068aff0b21b327ca4
